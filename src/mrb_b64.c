@@ -1,7 +1,7 @@
 #include <mruby.h>
 #include <mruby/string.h>
-#include "cencode.h"
-#include "cdecode.h"
+#include <b64/cencode.h>
+#include <b64/cdecode.h>
 #include <math.h>
 #include <mruby/variable.h>
 #include <mruby/data.h>
@@ -16,15 +16,9 @@ mrb_b64_encode(mrb_state *mrb, mrb_value self)
 
   mrb_get_args(mrb, "s", &input, &input_size);
 
-  mrb_int code_padded_size = ((input_size + ( (input_size % 3) ? (3 - (input_size % 3)) : 0) ) / 3) * 4;
-  mrb_int newline_size = ((code_padded_size) / 72) * 2;
+  mrb_value b64_size = mrb_funcall(mrb, self, "_b64size", 1, mrb_fixnum_value(input_size));
 
-  mrb_int b64_size;
-  if (mrb_int_add_overflow(code_padded_size, newline_size + 1, &b64_size)) {
-    mrb_raise(mrb, E_ARGUMENT_ERROR, "base64 input_size doesn't fit into mrb_int");
-  }
-
-  mrb_value output_val = mrb_str_new(mrb, NULL, b64_size);
+  mrb_value output_val = mrb_str_new(mrb, NULL, mrb_fixnum(b64_size));
 
   char *output = RSTRING_PTR(output_val);
 
@@ -90,15 +84,9 @@ mrb_b64_update(mrb_state *mrb, mrb_value self)
 
   mrb_get_args(mrb, "s", &input, &input_size);
 
-  mrb_int code_padded_size = ((input_size + ( (input_size % 3) ? (3 - (input_size % 3)) : 0) ) / 3) * 4;
-  mrb_int newline_size = ((code_padded_size) / 72) * 2;
+  mrb_value b64_size = mrb_funcall(mrb, self, "_b64size", 1, mrb_fixnum_value(input_size));
 
-  mrb_int b64_size;
-  if (mrb_int_add_overflow(code_padded_size, newline_size + 1, &b64_size)) {
-    mrb_raise(mrb, E_ARGUMENT_ERROR, "base64 input_size doesn't fit into mrb_int");
-  }
-
-  mrb_value output_val = mrb_str_new(mrb, NULL, b64_size);
+  mrb_value output_val = mrb_str_new(mrb, NULL, mrb_fixnum(b64_size));
 
   char *output = RSTRING_PTR(output_val);
 
