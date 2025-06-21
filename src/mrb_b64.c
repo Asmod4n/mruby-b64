@@ -135,15 +135,12 @@ mrb_b64_encode_block(mrb_state *mrb, mrb_value self)
 static mrb_value
 mrb_b64_encode_blockend(mrb_state *mrb, mrb_value self)
 {
-  mrb_value output;
-  mrb_get_args(mrb, "S", &output);
-
   base64_encodestate *state = (base64_encodestate *) DATA_PTR(self);
-  char buffer[5];
-  size_t output_size = base64_encode_blockend(buffer, state);
+  mrb_value buffer = mrb_str_buf_new(mrb, 4);
+  size_t output_size = base64_encode_blockend(RSTRING_PTR(buffer), state);
   base64_init_encodestate(state);
 
-  return mrb_str_cat(mrb, output, buffer, output_size);
+  return mrb_str_resize(mrb, buffer, output_size);
 }
 
 static mrb_value
