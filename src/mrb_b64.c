@@ -205,7 +205,7 @@ mrb_mruby_b64_gem_init(mrb_state* mrb)
   mrb_define_class_method_id(mrb, b64_class, MRB_SYM(decode), mrb_b64_decode, MRB_ARGS_REQ(1));
   mrb_define_method_id(mrb, b64_class, MRB_SYM(initialize), mrb_b64_init, MRB_ARGS_NONE());
   mrb_define_method_id(mrb, b64_class, MRB_SYM(update), mrb_b64_update, MRB_ARGS_REQ(1));
-  mrb_define_alias(mrb, b64_class, "<<", "update");
+  mrb_define_alias_id(mrb, b64_class, MRB_OPSYM(lshift), MRB_SYM(update));
   mrb_define_method_id(mrb, b64_class, MRB_SYM(final), mrb_b64_final, MRB_ARGS_NONE());
 
   b64_decoder_class = mrb_define_class_under_id(mrb, b64_class, MRB_SYM(Decoder), mrb->object_class);
