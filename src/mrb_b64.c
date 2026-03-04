@@ -218,7 +218,7 @@ mrb_mruby_b64_gem_init(mrb_state* mrb)
   MRB_SET_INSTANCE_TT(b64_encoder_class, MRB_TT_DATA);
   mrb_define_method_id(mrb, b64_encoder_class, MRB_SYM(initialize), mrb_b64_init_encoder, MRB_ARGS_NONE());
   mrb_define_method_id(mrb, b64_encoder_class, MRB_SYM(encode), mrb_b64_encode_block, MRB_ARGS_REQ(1));
-  mrb_define_method_id(mrb, b64_encoder_class, MRB_SYM(final), mrb_b64_encode_blockend, MRB_ARGS_REQ(1));
+  mrb_define_method_id(mrb, b64_encoder_class, MRB_SYM(final), mrb_b64_encode_blockend, MRB_ARGS_NONE());
 }
 
 void mrb_mruby_b64_gem_final(mrb_state* mrb) {}
