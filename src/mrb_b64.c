@@ -24,8 +24,6 @@ mrb_b64_encode(mrb_state *mrb, mrb_value self)
   }
 
   mrb_value output_val = mrb_str_new(mrb, NULL, b64_size - 1);
-  mrb_gc_protect(mrb, output_val);
-
   char *output = RSTRING_PTR(output_val);
 
   size_t output_size = base64_encode_block(input, input_size, output, &state);
@@ -46,8 +44,6 @@ mrb_b64_decode(mrb_state *mrb, mrb_value self)
   mrb_get_args(mrb, "s", &input, &input_size);
 
   mrb_value output_val = mrb_str_buf_new(mrb, base64_decode_maxlength(input_size) - 1);
-  mrb_gc_protect(mrb, output_val);
-
   char *output = RSTRING_PTR(output_val);
 
   base64_decodestate state;
@@ -87,7 +83,6 @@ mrb_b64_decode_block(mrb_state *mrb, mrb_value self)
   base64_decodestate *state = (base64_decodestate *) DATA_PTR(self);
 
   mrb_value output_val = mrb_str_buf_new(mrb, base64_decode_maxlength(input_size) - 1);
-  mrb_gc_protect(mrb, output_val);
   char *output = RSTRING_PTR(output_val);
 
   size_t output_size = base64_decode_block(input, input_size, output, state);
@@ -128,7 +123,6 @@ mrb_b64_encode_block(mrb_state *mrb, mrb_value self)
   }
 
   mrb_value output_val = mrb_str_buf_new(mrb, b64_size - 1);
-  mrb_gc_protect(mrb, output_val);
   char *output = RSTRING_PTR(output_val);
 
   size_t output_size = base64_encode_block(input, input_size, output, state);
@@ -141,7 +135,6 @@ mrb_b64_encode_blockend(mrb_state *mrb, mrb_value self)
 {
   base64_encodestate *state = (base64_encodestate *) DATA_PTR(self);
   mrb_value buffer = mrb_str_buf_new(mrb, 4);
-  mrb_gc_protect(mrb, buffer);
   size_t output_size = base64_encode_blockend(RSTRING_PTR(buffer), state);
   base64_init_encodestate(state);
 
@@ -175,7 +168,6 @@ mrb_b64_update(mrb_state *mrb, mrb_value self)
   }
 
   mrb_value output_val = mrb_str_new(mrb, NULL, b64_size);
-  mrb_gc_protect(mrb, output_val);
 
   char *output = RSTRING_PTR(output_val);
 
